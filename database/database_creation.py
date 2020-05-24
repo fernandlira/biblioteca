@@ -3,7 +3,7 @@ from connection import Conexion
 con = Conexion()
 
 def create_users_table():
-    query = f"CREATE TABLE IF NOT EXISTS users (id SERIAL,identifier VARCHAR(15) NOT NULL UNIQUE,name VARCHAR(50) NOT NULL);"
+    query = "CREATE TABLE IF NOT EXISTS users (id SERIAL,identifier VARCHAR(15) NOT NULL UNIQUE,name VARCHAR(50) NOT NULL);"
     con.query(query)
 
 def create_authors_table():
