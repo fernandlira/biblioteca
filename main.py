@@ -1,6 +1,6 @@
 from database.connection import Conexion
 
-def inserLibros():
+def registrarLibros():
     try:
         nro_editorial = int(input('ingrese el nro de editoriales: '))
         a = 1
@@ -32,4 +32,12 @@ def inserLibros():
     except Exception as a:
         print(f'ocurrio un error aqui: {str(a)}')
 
-inserLibros()
+
+
+def main()
+    print('BIENVENIDO A LA BIBLIOTECA!')
+    print('presiona 1 si deseas regristrar libros')
+    opcion = int(input('ingrese el numero: '))
+    if opcion == 1:
+        registrarLibros()
+main()
