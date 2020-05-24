@@ -1,5 +1,5 @@
 from database.connection import Conexion
-from classes.Libreria import (Author, P_company, Books)
+from classes.libreria import (Author, P_company, Books, User)
 
 def registrarLibro():
     try:
@@ -44,16 +44,36 @@ def registrarLibro():
 
 
 def main():
-    print('BIENVENIDO A LA BIBLIOTECA!')
-    print('presiona 1 si deseas regristrar libros o 2 si deseas ingresar editorial o 3 si deseas ingresar autor')
-    opcion = int(input('ingrese el numero: '))
-    if opcion == 1:
-        registrarLibro()
-    elif opcion == 2:
-        editorial = P_company(input("Inserta nombre de editorial: "))
-        editorial.insert_editorial()
-    elif opcion == 3:
-        autor = Author(input("Inserta nombre de Autor: "))
-        autor.insert_author()
+    while True:
+        print('BIENVENIDO A LA BIBLIOTECA!')
+        print('(1) Registrar nuevo Libro (2) Agregar Nueva Editorial (3) Agregar Nuevo Autor (4) Inscribir Lector')
+        print('(5) Listar Lectores (0) Salir')
+        opcion = int(input('Ingrese la opción: '))
+        if opcion == 0:
+            break
+        elif opcion == 1:
+            registrarLibro()
+        elif opcion == 2:
+            editorial = P_company(input("Inserta nombre de editorial: "))
+            editorial.insert_editorial()
+        elif opcion == 3:
+            autor = Author(input("Inserta nombre de Autor: "))
+            autor.insert_author()
+        elif opcion == 4:
+            while True:
+                try:
+                    idenficador = input("Ingresa el identificador del nuevo lector: ")
+                    if idenficador.upper() not in User.get_identifiers_list():
+                        break
+                    else:
+                        raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+                except Exception as e:
+                    print(f"{e}")
+            lector = User(idenficador.upper(),input("Ingrese el nombre del nuevo lector: "))
+            lector.insert_user()
+        elif opcion == 5:
+            User.listar()
+                 
+
         
 main()

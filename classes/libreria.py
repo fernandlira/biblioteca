@@ -12,6 +12,7 @@ class Author:
         })
         conn.connection.commit()
         conn.connection.close()
+        print(f"Se ha registrado al autor: {self.author}")
     
     def listar():
         conn = Conexion()
@@ -79,3 +80,35 @@ class Books:
         })
         conn.connection.commit()
         conn.connection.close()
+
+class User:
+    def __init__(self,identifier,name):
+        self.identifier = identifier
+        self.name = name
+
+    def insert_user(self):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO users (identifier,name) values (%(identifier)s,%(name)s);",{ 
+            'identifier' : self.identifier,
+            'name' : self.name
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    def get_identifiers_list():
+        lista = []
+        conn = Conexion()
+        conn.query(f"SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        return lista
+
+    def listar():
+        conn = Conexion()
+        conn.query("SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"ID: {r[0]} \nIdentificador: {r[1]} \nNombre: {r[2]}\n")
+    
