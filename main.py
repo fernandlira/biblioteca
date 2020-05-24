@@ -1,6 +1,5 @@
 from database.connection import Conexion
-from editorial import P_company
-from autores import Author
+from classes.Libreria import (Author, P_company, Books)
 
 def registrarLibro():
     try:
@@ -25,17 +24,22 @@ def registrarLibro():
                         else:
                             raise Exception("El ID del autor no existe")
                     except Exception as e:
-                        print(f"str{e}")
+                        print(f"error aqui: {str(e)}")
 
                 libro = input(f'Ingrese el nombre del libro: ')
-                disponible = True
-                #libro = Libro(libro, editorial, autor, disponible)
+                disponible = input('escriba True si esta disponible: ')
+                apodo = input('ingresa un sobrenombre: ')
+                nuevo = Books(apodo, editorial, author, libro, disponible)
+                nuevo.insert_book()
                 break
 
-                #libro = Libro(libro, editorial, autor, disponible)
-                #libro.insertar()
+
     except Exception as e:
-        print(f"str{e}")
+        print(f"Error aqui: {str(e)}")
+    except KeyboardInterrupt:
+        print('se interrumpio la app')
+    except ValueError:
+        print('No puso un dato')
 
 
 
@@ -45,10 +49,10 @@ def main():
     opcion = int(input('ingrese el numero: '))
     if opcion == 1:
         registrarLibro()
-    if opcion == 2:
+    elif opcion == 2:
         editorial = P_company(input("Inserta nombre de editorial: "))
         editorial.insert_editorial()
-    if opcion == 3:
+    elif opcion == 3:
         autor = Author(input("Inserta nombre de Autor: "))
         autor.insert_author()
         
