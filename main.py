@@ -1,43 +1,55 @@
 from database.connection import Conexion
+from editorial import P_company
+from autores import Author
 
-def registrarLibros():
+def registrarLibro():
     try:
-        nro_editorial = int(input('ingrese el nro de editoriales: '))
-        a = 1
         while True:
-            try:
-                editorial = str(input(f'ingrese el nombre de la editorial nro{a}: '))
-                nro_libros = int(input(f'ingrese el numero de libros: '))
-                b = 1
+                P_company.listar()
                 while True:
                     try:
-                        autores = []
-                        libro = str(input(f'ingrese el nombre del libro Nr°{b}: '))
-                        autor = str(input('ingrese el nombre del autor: '))
-                        disponible = input('esta disponible?: ')
-                        b += 1
-                        if b > nro_libros:
+                        editorial = int(input("Ingrese el ID de la editorial: "))
+                        if editorial in P_company.obtener_ids():
                             break
-                    except ValueError:
-                        print('olvidaste ingresar algo')
-                a += 1
-                if a > nro_editorial:
-                    break
-            except ValueError:
-                print('no ingresaste un dato')
-    except ValueError:
-        print('no ingresaste un dato')
-    except KeyboardInterrupt:
-        print('se detubo la app')
-    except Exception as a:
-        print(f'ocurrio un error aqui: {str(a)}')
+                        else:
+                            raise Exception("El ID del editorial no existe")
+                    except Exception as e:
+                        print(f"str{e}")
+                
+                while True:
+                    Author.listar()
+                    try:
+                        author = int(input("Ingrese el ID del autor: "))
+                        if author in Author.obtener_ids():
+                            break
+                        else:
+                            raise Exception("El ID del autor no existe")
+                    except Exception as e:
+                        print(f"str{e}")
+
+                libro = input(f'Ingrese el nombre del libro: ')
+                disponible = True
+                #libro = Libro(libro, editorial, autor, disponible)
+                break
+
+                #libro = Libro(libro, editorial, autor, disponible)
+                #libro.insertar()
+    except Exception as e:
+        print(f"str{e}")
 
 
 
 def main():
     print('BIENVENIDO A LA BIBLIOTECA!')
-    print('presiona 1 si deseas regristrar libros')
+    print('presiona 1 si deseas regristrar libros o 2 si deseas ingresar editorial o 3 si deseas ingresar autor')
     opcion = int(input('ingrese el numero: '))
     if opcion == 1:
-        registrarLibros()
+        registrarLibro()
+    if opcion == 2:
+        editorial = P_company(input("Inserta nombre de editorial: "))
+        editorial.insert_editorial()
+    if opcion == 3:
+        autor = Author(input("Inserta nombre de Autor: "))
+        autor.insert_author()
+        
 main()
