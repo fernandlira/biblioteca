@@ -34,7 +34,7 @@ def registrarLibros():
 
 
 
-def main()
+def main():
     print('BIENVENIDO A LA BIBLIOTECA!')
     print('presiona 1 si deseas regristrar libros')
     opcion = int(input('ingrese el numero: '))
