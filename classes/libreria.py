@@ -71,7 +71,7 @@ class Books:
     def insert_book(self):
         conn = Conexion()
         cursor = conn.connection.cursor()
-        cursor.execute(f"INSERT INTO books (identifier,book, author_id, p_company_id, status) values (%(identifier)s, %(book)s, %(author_id)s, %(p_company_id)s, %(status)s);",{ 
+        cursor.execute(f"INSERT INTO books (identifier, book, author_id, p_company_id, status) values (%(identifier)s, %(book)s, %(author_id)s, %(p_company_id)s, %(status)s);",{ 
             'identifier' : self.sobrenombre,
             'book': self.nombre,
             'author_id': self.autor,
