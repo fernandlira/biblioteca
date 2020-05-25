@@ -32,8 +32,6 @@ def registrarLibro():
                 nuevo = Books(apodo, editorial, author, libro, disponible)
                 nuevo.insert_book()
                 break
-
-
     except Exception as e:
         print(f"Error aqui: {str(e)}")
     except KeyboardInterrupt:
@@ -41,7 +39,23 @@ def registrarLibro():
     except ValueError:
         print('No puso un dato')
 
-
+def incribirLector():
+    try:
+        while True:
+            try:
+                idenficador = input("Ingresa el identificador del nuevo lector: ")
+                if idenficador.upper() not in User.get_identifiers_list():
+                    break
+                else:
+                    raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+            except Exception as e:
+                print(f"error aqui: {str(e)}")
+        lector = User(idenficador.upper(),input("Ingrese el nombre del nuevo lector: "))
+        lector.insert_user()
+    except Exception as i:
+        print('Error aqui:', str(i))
+    except KeyboardInterrupt:
+        print('Se interrumpio la app')
 
 def main():
     while True:
@@ -60,20 +74,9 @@ def main():
             autor = Author(input("Inserta nombre de Autor: "))
             autor.insert_author()
         elif opcion == 4:
-            while True:
-                try:
-                    idenficador = input("Ingresa el identificador del nuevo lector: ")
-                    if idenficador.upper() not in User.get_identifiers_list():
-                        break
-                    else:
-                        raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
-                except Exception as e:
-                    print(f"{e}")
-            lector = User(idenficador.upper(),input("Ingrese el nombre del nuevo lector: "))
-            lector.insert_user()
+            incribirLector()
         elif opcion == 5:
             User.listar()
                  
 
-        
 main()
