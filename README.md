@@ -1,0 +1,3 @@
+ejecutar:
+
+- python app.py
