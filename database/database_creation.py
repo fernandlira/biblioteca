@@ -21,14 +21,14 @@ def create_books_table():
         book VARCHAR(50) NOT NULL,
         author_id int NOT NULL,
         p_company_id int NOT NULL,
-        status boolean NOT NULL,
+        status boolean NOT NULL DEFAULT TRUE,
         FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE,
         FOREIGN KEY (p_company_id) REFERENCES p_companies(id) ON DELETE CASCADE
          );'''
     con.query(query)
 
 def create_borrows_table():
-    query = '''CREATE TABLE IF NOT EXISTS borrows (id SERIAL UNIQUE,book_id VARCHAR(50) NOT NULL, user_id VARCHAR(50) NOT NULL, date DATE NOT NULL,
+    query = '''CREATE TABLE IF NOT EXISTS borrows (id SERIAL UNIQUE,book_id VARCHAR(50) NOT NULL, user_id VARCHAR(50) NOT NULL, date DATE NOT NULL, date_of_return DATE NULL,
     FOREIGN KEY (book_id) REFERENCES books(identifier) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(identifier) ON DELETE CASCADE 
     );'''

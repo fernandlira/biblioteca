@@ -4,6 +4,15 @@ from classes.libreria import (Author, P_company, Books, User)
 def registrarLibro():
     try:
         while True:
+            try:
+                idenficador = input("Ingresa el identificador del nuevo libro: ")
+                if idenficador.upper() not in Books.get_identifiers_list():
+                    break
+                else:
+                    raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+            except Exception as e:
+                print(f"error aqui: {str(e)}")
+        while True:
                 P_company.listar()
                 while True:
                     try:
@@ -27,9 +36,7 @@ def registrarLibro():
                         print(f"error aqui: {str(e)}")
 
                 libro = input(f'Ingrese el nombre del libro: ')
-                disponible = input('escriba True si esta disponible: ')
-                apodo = input('ingresa un sobrenombre: ')
-                nuevo = Books(apodo, editorial, author, libro, disponible)
+                nuevo = Books(idenficador, editorial, author, libro)
                 nuevo.insert_book()
                 break
     except Exception as e:
@@ -57,11 +64,50 @@ def incribirLector():
     except KeyboardInterrupt:
         print('Se interrumpio la app')
 
+def alquilarLibros():
+    User.listar()
+    try:
+        while True:
+            try:
+                u_idenficador = input("Ingresa el identificador del lector: ")
+                if u_idenficador.upper() in User.get_identifiers_list():
+                    print("")
+                    break
+                else:
+                    raise Exception("--- EL identificador no existe --- Por favor, ingrese uno diferente")
+            except Exception as e:
+                print(f"error aqui: {str(e)}")
+        Books.listar_alquiler()
+        ids = [] 
+        while True:
+            while True:
+                try:
+                    id_libro = input("Ingresa el codigo del libro: ")
+                    if id_libro.upper() in Books.get_identifiers_list2():
+                        ids.append(id_libro)
+                        break
+                    else:
+                        raise Exception("--- EL identificador no existe o no esta disponible --- Por favor, ingrese uno diferente")
+                except Exception as i:
+                    print('Error aqui:', str(i))
+            opcion = int(input("¿Desea alquilar otro libro? (0) NO (1) SI: "))
+            if opcion == 0:
+                break
+        for ide in ids:
+            Books.borrow_book(ide,u_idenficador)
+            print(f"Alquiler del libro {ide} completado!")
+        
+        
+    except Exception as i:
+        print('Error aqui:', str(i))
+    except KeyboardInterrupt:
+        print('Se interrumpio la app')
+
 def main():
     while True:
         print('BIENVENIDO A LA BIBLIOTECA!')
         print('(1) Registrar nuevo Libro (2) Agregar Nueva Editorial (3) Agregar Nuevo Autor (4) Inscribir Lector')
-        print('(5) Listar Lectores (0) Salir')
+        print('(5) Listar Lectores (6) Listar Libros (7) Alquilar Libros (0) Salir')
         opcion = int(input('Ingrese la opción: '))
         if opcion == 0:
             break
@@ -77,6 +123,10 @@ def main():
             incribirLector()
         elif opcion == 5:
             User.listar()
+        elif opcion == 6:
+            Books.listar()
+        elif opcion == 7:
+            alquilarLibros()
                  
 
 main()
