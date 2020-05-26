@@ -1,5 +1,5 @@
-from database.connection import Conexion
-from classes.libreria import (Author, P_company, Books, User)
+# from database.connection import Conexion
+# from classes.libreria import (Author, P_company, Books, User)
 
 def registrarLibro():
     try:
@@ -36,8 +36,8 @@ def registrarLibro():
                         print(f"error aqui: {str(e)}")
 
                 libro = input(f'Ingrese el nombre del libro: ')
-                nuevo = Books(idenficador, editorial, author, libro)
-                nuevo.insert_book()
+                # nuevo = Books(idenficador, editorial, author, libro)
+                # nuevo.insert_book()
                 break
     except Exception as e:
         print(f"Error aqui: {str(e)}")
@@ -127,6 +127,5 @@ def main():
             Books.listar()
         elif opcion == 7:
             alquilarLibros()
-                 
 
-main()
+registrarLibro()
