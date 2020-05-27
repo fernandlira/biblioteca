@@ -1,6 +1,5 @@
-from views.vistas import (vistaAuthor, vistaAplicacion, vistaEditorial)
-
+from views.vistas import VistaAplicacion
 
 def main():
-    vistaAplicacion.iniciar()
+    VistaAplicacion.iniciar()
 main()

@@ -1,8 +1,7 @@
 from database.connection import Conexion
-from datetime import datetime
 
 class Author:
-    def __init__(self,author):
+    def __init__(self, author):
         self.author = author
 
     def insert_author(self):
@@ -13,8 +12,7 @@ class Author:
         })
         conn.connection.commit()
         conn.connection.close()
-        print(f"Se ha registrado al autor: {self.author}")
-    
+
     def listar():
         conn = Conexion()
         conn.query("SELECT * FROM authors")
@@ -31,8 +29,11 @@ class Author:
             ids.append(r[0])
         return ids
 
+    def __str__(self):
+        return f"\nAuthor : {self.author}\n"
+
 class P_company:
-    def __init__(self,editorial):
+    def __init__(self, editorial):
         self.editorial = editorial
 
     def insert_editorial(self):
@@ -60,6 +61,9 @@ class P_company:
             ids.append(r[0])
         return ids
 
+    def __str__(self):
+        return f"\nEditorial : {self.editorial}\n"
+
 
 class Books:
     def __init__(self, sobrenombre, editorial, autor, nombre):
@@ -82,14 +86,10 @@ class Books:
 
     def listar():
         conn = Conexion()
-        conn.query("SELECT * FROM books")
+        conn.query("select identifier, book, author, p_company, status from books as b inner join authors as a on b.author_id =a.id inner join p_companies as e on b.p_company_id = e.id;")
         response = conn.cursor.fetchall()
         for r in response:
-            print(f"ID: {r[0]} \nIdentificador: {r[1]} \nNombre: {r[2]}\nAutor: {r[3]}\nEditorial: {r[4]}")
-            if r[5]:
-                print("Disponible\n")
-            else:
-                print("No Disponible\n")
+            print(f"\nApodo: {r[0]} Libro: {r[1]} Autor: {r[2]} Editorial: {r[3]}Estado: {r[4]}\n")
 
     def listar_alquiler():
         conn = Conexion()
@@ -132,6 +132,8 @@ class Books:
         conn.connection.commit()
         conn.connection.close()
 
+    def __str__(self):
+        return f"\nLibro: {self.nombre}, Sobrenombre: {self.sobrenombre}\n"
 
 class User:
     def __init__(self,identifier,name):
@@ -151,7 +153,7 @@ class User:
     def get_identifiers_list():
         lista = []
         conn = Conexion()
-        conn.query(f"SELECT * FROM users")
+        conn.query("SELECT * FROM users")
         response = conn.cursor.fetchall()
         for r in response:
             lista.append(r[1])
@@ -163,4 +165,6 @@ class User:
         response = conn.cursor.fetchall()
         for r in response:
             print(f"ID: {r[0]} \nIdentificador: {r[1]} \nNombre: {r[2]}\n")
-    
+
+    def __str__(self):
+        return f"\nIdentificador: {self.identifier}, Nombre: {self.name}\n"

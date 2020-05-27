@@ -1,36 +1,48 @@
-from database.connection import Conexion
+class Libreria:
+    def __init__(self, nombre):
+        self.nombre = nombre
 
-class Author:
-    def __init__(self, author):
+    def __str__(self):
+        return f"\nLibreria : {self.nombre}\n"
+
+class Libro:
+    def __init__(self, nombre, author):
+        self.nombre = nombre
         self.author = author
 
-    def insert_author(self):
-        conn = Conexion()
-        cursor = conn.connection.cursor()
-        cursor.execute(f"INSERT INTO authors (author) values (%(author)s);",{ 
-            'author' : self.author
-        })
-        conn.connection.commit()
-        conn.connection.close()
+    @staticmethod
+    def buscar_libro(nombre, libros):
+        resultado = None
+        for libro in libros:
+            if libro.nombre == nombre:
+                resultado = libro
+                break
+        return resultado
 
     def __str__(self):
-        return f"\nAuthor : {self.author}\n"
+        return (
+            "\n----------LIBRO-------------\n"
+            f"\n Nombre del libro : {self.nombre}\n"
+            f"\n nombre del author : {self.author}\n"
+            "\n----------------------------\n"
+            )
 
-class P_company:
-    def __init__(self, editorial):
-        self.editorial = editorial
+class Alquiler:
+    def __init__(self, dni, lector):
+        self.dni = dni
+        self.lector = lector
+        self.prestamo = []
+
+    def añadir_libros(self, libro, fecha_hoy, fecha_entrega):
+        self.prestamo.append(
+            (libro, fecha_hoy, fecha_entrega)
+        )
 
     def __str__(self):
-        return f"\nEditorial : {self.editorial}\n"
-
-
-class Books:
-    def __init__(self, sobrenombre, editorial, autor, nombre, disponible):
-        self.sobrenombre = sobrenombre
-        self.editorial = editorial
-        self.autor = autor
-        self.nombre = nombre
-        self.disponible = disponible
-
-    def __str__(self):
-        return f"\nLibro: {self.nombre}, Disponible: {self.disponible}\n"
+        return (
+            "\n---------------------------------------"
+            f"\nSu DNI: {self.dni}\n"
+            f"\nla persona: {self.lector}\n"
+            f"\ndetalle: {self.prestamo}\n"
+            "------------------------------------------"
+        )
