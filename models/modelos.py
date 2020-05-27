@@ -1,10 +1,38 @@
-class Libreria:
-    def __init__(self, nombre):
-        self.nombre = nombre
+from database.connection import Conexion
+
+
+class Author:
+    def __init__(self, author):
+        self.author = author
+
+    def insert_author(self):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO authors (author) values (%(author)s);",{ 
+            'author' : self.author
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    def listar():
+        conn = Conexion()
+        conn.query("SELECT * FROM authors")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"ID: {r[0]} \nNombre: {r[1]}")
+
+    def obtener_ids():
+        ids = []
+        conn = Conexion()
+        conn.query("SELECT * FROM authors")
+        response = conn.cursor.fetchall()
+        for r in response:
+            ids.append(r[0])
+        return ids
 
     def __str__(self):
-        return f"\nLibreria : {self.nombre}\n"
-
+        return f"\nAuthor : {self.author}\n"
+        
 class Libro:
     def __init__(self, nombre, author):
         self.nombre = nombre
@@ -46,3 +74,49 @@ class Alquiler:
             f"\ndetalle: {self.prestamo}\n"
             "------------------------------------------"
         )
+
+class User:
+
+    def __init__(self,identifier,name):
+        self.identifier = identifier
+        self.name = name
+
+    def insert_user(self):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO users (identifier,name) values (%(identifier)s,%(name)s);",{ 
+            'identifier' : self.identifier,
+            'name' : self.name
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    def get_identifiers_list():
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        return lista
+
+    def verify_id(identifier):
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        if identifier not in lista:
+            return True
+
+    def listar():
+        conn = Conexion()
+        conn.query("SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"ID: {r[0]} \nIdentificador: {r[1]} \nNombre: {r[2]}\n")
+
+    def __str__(self):
+        return f"\nIdentificador: {self.identifier}, Nombre: {self.name}\n"
+

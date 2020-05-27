@@ -1,16 +1,32 @@
-from models.modelos import (Libreria, Libro, Alquiler)
+from models.modelos import (Author, Libro, Alquiler, User)
 
-
-class ControladorLibreria:
-
-    libreria = None
+class ControladorAutor:
 
     @classmethod
-    def registrar_libreria(cls, datos_libreria):
-        cls.libreria = Libreria(
-            datos_libreria['nombre']
-            )
-        return cls.libreria
+    def registrar_autor(cls, nombre):
+        Autor = Author(nombre)
+        Autor.insert_author()
+        print(f"Se registro al autor {nombre} exitosamente")
+
+    @classmethod
+    def listar_autores(cls):
+        return Author.listar()
+
+class ControladorLector:
+
+    @classmethod
+    def verificar_id(cls, identificador):
+        return User.verify_id(identificador)
+
+    @classmethod
+    def registrar_lector(cls, identificador,nombre):
+        Usuario = User(identificador,nombre)
+        Usuario.insert_user()
+        print(f"Se registro al usuario {nombre} exitosamente")
+
+    @classmethod
+    def listar_lectores(cls):
+        return User.listar()
 
 class ControladorBook:
 

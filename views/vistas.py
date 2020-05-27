@@ -1,36 +1,65 @@
-from controllers.controlador import (ControladorLibreria, ControladorBook, ControladorAlquiler)
+from controllers.controlador import (ControladorAutor, ControladorBook, ControladorAlquiler, ControladorLector)
 
-class VistaLibreria:
+class VistaLector:
 
     @staticmethod
-    def ingreso_libreria():
-        if ControladorLibreria.libreria is None:
-            nombre = input('ingrese el nombre de la Libreria: ')
-            ControladorLibreria.registrar_libreria(
-                {
-                    'nombre': nombre
-                }
-            )
-        print(ControladorLibreria.libreria)
+    def menu():
+        while True:
+            print('\n')
+            print('ESTAS EN LA SECCION DE LECTORES')
+            print('(1) Registrar Lector (2) Listar Lectores')
+            opcion = int(input('Ingrese la opción: '))
+            if opcion == 1:
+                while True:
+                    try:
+                        identificador = input("Ingresa el identificador del nuevo lector: ")
+                        if ControladorLector.verificar_id(identificador):
+                            break
+                        else:
+                            raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+                    except Exception as e:
+                        print(f"error aqui: {str(e)}")
+                ControladorLector.registrar_lector(identificador,input("Ingrese el nombre del nuevo lector: "))
+            elif opcion == 2:
+                ControladorLector.listar_lectores()
+            else:
+                break
+    
+    @staticmethod
+    def ingreso_lector():
+        nombre = input('ingres el nombre del libro: ')
+        author = input('ingrese el nombre del author: ')
+        nuevo_libro = ControladorBook.registrar_libro(
+            {
+                'nombre': nombre, 'author': author
+            }
+        )
+        print(nuevo_libro)
+
+    @staticmethod
+    def listar_lectores():
+        for b in ControladorBook.libros:
+            print(b)
 
 class VistaBook:
 
     @staticmethod
     def menu():
-        continuar = True
-        while continuar:
+        while True:
             print('\n')
             print('ESTAS EN LA SECCION DE REGISTRO DE LIBROS')
-            print('escriba 1 si desea crear un nuevo libro')
-            print('escriba 2 si desea listar los libros')
-            print('escriba 3 para regresar')
+            print('(1) Registrar Autor (2) Registrar Editorial')
             opcion = int(input('ingrese el numero: '))
             if opcion == 1:
-                VistaBook.ingreso_libro()
+                ControladorAutor.registrar_autor(input("Ingrese nombre de Autor: "))
             elif opcion == 2:
+                ControladorAutor.listar_autores() #AQUI DEBE IR LO DE EDITORIAL PARA REGISTRAR
+            elif opcion == 3:
+                VistaBook.ingreso_libro()
+            elif opcion == 4:
                 VistaBook.listar_libros()
             else:
-                continuar = False
+                break
 
     @staticmethod
     def ingreso_libro():
@@ -122,17 +151,14 @@ class VistaAplicacion:
 
     @staticmethod
     def menu():
-        continuar = True
-        while continuar:
-            print('Puedes Ingresar el nombre de la libreria escribiendo 1')
-            print('PRIMERO REGISTRA NUEVOS LIBROS, para eso escribe 2')
-            print('Para ingresar al menu de libros a Alquilar, escriba 3')
-            opcion = int(input('ingresa el numero: '))
+        while True:
+            print('(1) Accede al Menú de Libros (2) Accede al Menú de alquiler (3) Accede al Menú de Lectores ')
+            opcion = int(input('Ingresa la opción: '))
             if opcion == 1:
-                VistaLibreria.ingreso_libreria()
-            elif opcion == 2:
                 VistaBook.menu()
-            elif opcion == 3:
+            elif opcion == 2:
                 VistaAlquiler.menu()
+            elif opcion == 3:
+                VistaLector.menu()
             else:
-                continuar = False
+                break
