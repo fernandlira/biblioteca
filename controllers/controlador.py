@@ -1,16 +1,35 @@
-from models.modelos import (Author, Libro, Alquiler, User)
+from models.modelos import (Author, Editorial, Libro, Alquiler, User)
 
 class ControladorAutor:
 
     @classmethod
     def registrar_autor(cls, nombre):
-        Autor = Author(nombre)
-        Autor.insert_author()
+        cls.autor = Author(nombre)
+        cls.autor.insert_author()
         print(f"Se registro al autor {nombre} exitosamente")
 
     @classmethod
     def listar_autores(cls):
         return Author.listar()
+
+class ControladorEditorial:
+
+    @classmethod
+    def registrar_editorial(cls, nombre):
+        cls.editorial = Editorial(nombre)
+        cls.editorial.insert_editorial()
+
+    @classmethod
+    def listar_editoriales(cls):
+        return Editorial.listar()
+
+class ControladorLibro:
+
+    @classmethod
+    def registrar_libro(cls, identificador, nombre, autor, editorial):
+        cls.libro = Libro(identificador, nombre, autor, editorial)
+        cls.libro.insert_book()
+
 
 class ControladorLector:
 
@@ -28,20 +47,8 @@ class ControladorLector:
     def listar_lectores(cls):
         return User.listar()
 
-class ControladorBook:
 
-    libros = []
 
-    @classmethod
-    def registrar_libro(cls, datos_libro):
-        if cls.libros is None:
-            cls.libros = []
-        nuevo_libro = Libro(
-            datos_libro['nombre'],
-            datos_libro['author']
-        )
-        cls.libros.append(nuevo_libro)
-        return  nuevo_libro
 
 class ControladorAlquiler:
     
