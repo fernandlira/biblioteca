@@ -19,7 +19,7 @@ class Author:
         conn.query("SELECT * FROM authors")
         response = conn.cursor.fetchall()
         for r in response:
-            print(f"ID: {r[0]} \nNombre: {r[1]}")
+            print(f"\nID: {r[0]} Nombre: {r[1]}\n")
 
     def obtener_ids():
         ids = []
@@ -32,11 +32,37 @@ class Author:
 
     def __str__(self):
         return f"\nAuthor : {self.author}\n"
-        
+
+class Editorial:
+    def __init__(self, editorial):
+        self.editorial = editorial
+
+    def insert_editorial(self):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO p_companies (p_company) values (%(p_company)s);",{ 
+            'p_company' : self.editorial
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    def listar():
+        conn = Conexion()
+        conn.query("SELECT * FROM p_companies")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"\nID: {r[0]} Nombre: {r[1]}\n")
+
+    def __str__(self):
+        return f"\nEditorial : {self.editorial}\n"
+
 class Libro:
-    def __init__(self, nombre, author):
+    def __init__(self, identificador, nombre, autor, editorial):
+        self.identificador = identificador
         self.nombre = nombre
-        self.author = author
+        self.autor = autor
+        self.editorial = editorial
+
 
     @staticmethod
     def buscar_libro(nombre, libros):
@@ -47,13 +73,17 @@ class Libro:
                 break
         return resultado
 
-    def __str__(self):
-        return (
-            "\n----------LIBRO-------------\n"
-            f"\n Nombre del libro : {self.nombre}\n"
-            f"\n nombre del author : {self.author}\n"
-            "\n----------------------------\n"
-            )
+    def insert_book(self):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO books (identifier, book, author_id, p_company_id) values (%(identifier)s, %(book)s, %(author_id)s, %(p_company_id)s);",{ 
+            'identifier' : self.identificador,
+            'book': self.nombre,
+            'author_id': self.autor,
+            'p_company_id': self.editorial
+        })
+        conn.connection.commit()
+        conn.connection.close()
 
 class Alquiler:
     def __init__(self, dni, lector):

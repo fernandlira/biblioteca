@@ -1,4 +1,4 @@
-from controllers.controlador import (ControladorAutor, ControladorBook, ControladorAlquiler, ControladorLector)
+from controllers.controlador import (ControladorAutor, ControladorEditorial, ControladorLibro, ControladorAlquiler, ControladorLector)
 
 class VistaLector:
 
@@ -10,72 +10,74 @@ class VistaLector:
             print('(1) Registrar Lector (2) Listar Lectores')
             opcion = int(input('Ingrese la opción: '))
             if opcion == 1:
-                while True:
-                    try:
-                        identificador = input("Ingresa el identificador del nuevo lector: ")
-                        if ControladorLector.verificar_id(identificador):
-                            break
-                        else:
-                            raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
-                    except Exception as e:
-                        print(f"error aqui: {str(e)}")
-                ControladorLector.registrar_lector(identificador,input("Ingrese el nombre del nuevo lector: "))
+                VistaLector.registro()
             elif opcion == 2:
                 ControladorLector.listar_lectores()
             else:
                 break
     
     @staticmethod
-    def ingreso_lector():
-        nombre = input('ingres el nombre del libro: ')
-        author = input('ingrese el nombre del author: ')
-        nuevo_libro = ControladorBook.registrar_libro(
-            {
-                'nombre': nombre, 'author': author
-            }
-        )
-        print(nuevo_libro)
+    def registro():
+        while True:
+            try:
+                identificador = input("Ingresa su DNI: ")
+                if ControladorLector.verificar_id(identificador):
+                    break
+                else:
+                    raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+            except Exception as e:
+                print(f"error aqui: {str(e)}")
+        ControladorLector.registrar_lector(identificador,input("Ingrese el nombre del nuevo lector: "))
 
-    @staticmethod
-    def listar_lectores():
-        for b in ControladorBook.libros:
-            print(b)
 
-class VistaBook:
+class VistaLibro:
 
     @staticmethod
     def menu():
         while True:
             print('\n')
             print('ESTAS EN LA SECCION DE REGISTRO DE LIBROS')
-            print('(1) Registrar Autor (2) Registrar Editorial')
+            print('(1) Registrar Autor (2) Registrar Editorial (3) Registrar Libro')
             opcion = int(input('ingrese el numero: '))
             if opcion == 1:
-                ControladorAutor.registrar_autor(input("Ingrese nombre de Autor: "))
+                VistaLibro.ingreso_autor()
             elif opcion == 2:
-                ControladorAutor.listar_autores() #AQUI DEBE IR LO DE EDITORIAL PARA REGISTRAR
+                VistaLibro.ingreso_editorial()
             elif opcion == 3:
-                VistaBook.ingreso_libro()
-            elif opcion == 4:
-                VistaBook.listar_libros()
+                VistaLibro.ingreso_libro()
             else:
                 break
 
     @staticmethod
-    def ingreso_libro():
-        nombre = input('ingres el nombre del libro: ')
-        author = input('ingrese el nombre del author: ')
-        nuevo_libro = ControladorBook.registrar_libro(
-            {
-                'nombre': nombre, 'author': author
-            }
-        )
-        print(nuevo_libro)
+    def ingreso_autor():
+        nombre = input("Ingrese nombre de Autor: ")
+        ControladorAutor.registrar_autor(nombre)
 
     @staticmethod
-    def listar_libros():
-        for b in ControladorBook.libros:
-            print(b)
+    def ingreso_editorial():
+        nombre = input('ingrese una editorial: ')
+        ControladorEditorial.registrar_editorial(nombre)
+
+    @staticmethod
+    def ingreso_libro():
+        isbn = input('Ingrese el ISBN del libro: ')
+        libro = input('Ingrese el nombre del libro: ')
+        VistaLibro.lista_editoriales()
+        autor = input('ingrese el ID del autor: ')
+        VistaLibro.listado_autores()
+        editorial = input('ingrese el ID de la editorial: ')
+        ControladorLibro.registrar_libro(isbn, libro, autor, editorial)
+        print('se registro correctamente')
+
+
+    @staticmethod
+    def listado_autores():
+        return ControladorAutor.listar_autores()
+
+    @staticmethod
+    def lista_editoriales():
+        return ControladorEditorial.listar_editoriales()
+
 
 class VistaAlquiler:
     @staticmethod
@@ -155,7 +157,7 @@ class VistaAplicacion:
             print('(1) Accede al Menú de Libros (2) Accede al Menú de alquiler (3) Accede al Menú de Lectores ')
             opcion = int(input('Ingresa la opción: '))
             if opcion == 1:
-                VistaBook.menu()
+                VistaLibro.menu()
             elif opcion == 2:
                 VistaAlquiler.menu()
             elif opcion == 3:
