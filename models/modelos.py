@@ -21,14 +21,15 @@ class Author:
         for r in response:
             print(f"\nID: {r[0]} Nombre: {r[1]}\n")
 
-    def obtener_ids():
+    def verify_id(identifier):
         ids = []
         conn = Conexion()
-        conn.query("SELECT * FROM authors")
+        conn.query(f"SELECT id FROM authors")
         response = conn.cursor.fetchall()
         for r in response:
             ids.append(r[0])
-        return ids
+        if identifier in ids:
+            return True
 
     def __str__(self):
         return f"\nAuthor : {self.author}\n"
@@ -52,6 +53,16 @@ class Editorial:
         response = conn.cursor.fetchall()
         for r in response:
             print(f"\nID: {r[0]} Nombre: {r[1]}\n")
+    
+    def obtener_ids(identifier):
+        ids = []
+        conn = Conexion()
+        conn.query(f"SELECT * FROM p_companies")
+        response = conn.cursor.fetchall()
+        for r in response:
+            ids.append(r[0])
+        if identifier in ids:
+            return True
 
     def __str__(self):
         return f"\nEditorial : {self.editorial}\n"
@@ -84,6 +95,16 @@ class Libro:
         })
         conn.connection.commit()
         conn.connection.close()
+
+    def verify_id(identifier):
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT * FROM books")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        if identifier not in lista:
+            return True
 
 class Alquiler:
     def __init__(self, dni, lector):

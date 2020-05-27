@@ -26,9 +26,22 @@ class ControladorEditorial:
 class ControladorLibro:
 
     @classmethod
+    def verificar_id(cls,identificador):
+        return Libro.verify_id(identificador)
+
+    @classmethod
     def registrar_libro(cls, identificador, nombre, autor, editorial):
         cls.libro = Libro(identificador, nombre, autor, editorial)
         cls.libro.insert_book()
+        print(f'Se registro correctamente el libro {nombre}')
+
+    @classmethod
+    def verificar_editorial(cls,editorial):
+        return Editorial.obtener_ids(editorial)
+
+    @classmethod
+    def verificar_autor(cls,autor):
+        return Author.verify_id(autor)
 
 
 class ControladorLector:

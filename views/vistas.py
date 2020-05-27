@@ -55,20 +55,52 @@ class VistaLibro:
 
     @staticmethod
     def ingreso_editorial():
-        nombre = input('ingrese una editorial: ')
+        nombre = input('Ingrese nombre de editorial: ')
         ControladorEditorial.registrar_editorial(nombre)
 
     @staticmethod
     def ingreso_libro():
-        isbn = input('Ingrese el ISBN del libro: ')
-        libro = input('Ingrese el nombre del libro: ')
-        VistaLibro.lista_editoriales()
-        autor = input('ingrese el ID del autor: ')
-        VistaLibro.listado_autores()
-        editorial = input('ingrese el ID de la editorial: ')
-        ControladorLibro.registrar_libro(isbn, libro, autor, editorial)
-        print('se registro correctamente')
-
+        try:
+            while True:
+                try:
+                    identificador = input("Ingresa el identificar del Libro: ")
+                    if ControladorLibro.verificar_id(identificador):
+                        break
+                    else:
+                        raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
+                except Exception as e:
+                    print(f"error aqui: {str(e)}")
+            libro = input('Ingrese el nombre del libro: ')
+            while True:
+                    VistaLibro.lista_editoriales()
+                    while True:
+                        try:
+                            editorial = int(input("Ingrese el ID de la editorial: "))
+                            if ControladorLibro.verificar_editorial(editorial):
+                                break
+                            else:
+                                raise Exception("El ID del editorial no existe, ingrese uno de la lista")
+                        except Exception as e:
+                            print(f"{e}")
+                    
+                    while True:
+                        VistaLibro.listado_autores()
+                        try:
+                            autor = int(input("Ingrese el ID del autor: "))
+                            if ControladorLibro.verificar_autor(autor):
+                                break
+                            else:
+                                raise Exception("El ID del autor no existe, ingrese uno de la lista")
+                        except Exception as e:
+                            print(f"{e}")
+                    ControladorLibro.registrar_libro(identificador, libro, autor, editorial)
+                    break
+        except Exception as e:
+            print(f"Error aqui: {str(e)}")
+        except KeyboardInterrupt:
+            print('se interrumpio la app')
+        except ValueError:
+            print('No puso un dato')
 
     @staticmethod
     def listado_autores():
@@ -145,7 +177,7 @@ class VistaAplicacion:
         except Exception as a:
             print(f'ocurrio un error aqui: {str(a)}')
         except KeyboardInterrupt:
-            print('se detubo la app')
+            print('Se detuvo la app')
 
     @staticmethod
     def bienvenida():
