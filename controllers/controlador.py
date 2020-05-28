@@ -1,4 +1,4 @@
-from models.modelos import (Author, Editorial, Libro, Alquiler, User)
+from models.modelos import (Author, Editorial, Libro, User)
 
 class ControladorAutor:
 
@@ -43,6 +43,9 @@ class ControladorLibro:
     def verificar_autor(cls,autor):
         return Author.verify_id(autor)
 
+    @classmethod
+    def listar_libros(cls):
+        return Libro.listar()
 
 class ControladorLector:
 
@@ -60,36 +63,17 @@ class ControladorLector:
     def listar_lectores(cls):
         return User.listar()
 
-
-
-
 class ControladorAlquiler:
-    
-    alquiler = None
-    alquiler_nuevo = None
 
     @classmethod
-    def registrar_alquiler(cls, datos_lector):
-        if cls.alquiler is None:
-            cls.alquiler = []
-        cls.alquiler.append(
-            Alquiler(
-                datos_lector['dni'],
-                datos_lector['lector']
-            )
-        )
-        cls.alquiler_nuevo = cls.alquiler[-1]
-        return cls.alquiler_nuevo
+    def borrow(cls, book_id, author_id, fecha):
+        return Libro.borrow_book(book_id, author_id, fecha)
 
     @classmethod
-    def registrar_libro_a_lector(cls, nombre_libro, fecha_hoy, fecha_entrega):
-        response = False
-        libro_alquilado = Libro.buscar_libro(
-            nombre_libro, ControladorBook.libros
-        )
-        if libro_alquilado:
-            cls.alquiler_nuevo.añadir_libros(
-                libro_alquilado, fecha_hoy, fecha_entrega
-            )
-            response = True
-        return response
+    def get_identifiers_list(cls):
+        return Libro.get_identifiers_list()
+
+
+    @classmethod
+    def get_identifiers_list2(cls):
+        return Libro.get_identifiers_list2()
