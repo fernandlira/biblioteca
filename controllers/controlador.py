@@ -93,9 +93,8 @@ class ControladorAlquiler:
 
     @classmethod
     def get_identifiers_list(cls):
-        return Libro.get_identifiers_list()
-
+        return cls.Libro.get_identifiers_list()
 
     @classmethod
     def get_identifiers_list2(cls):
-        return Libro.get_identifiers_list2()
+        return cls.Libro.get_identifiers_list2()

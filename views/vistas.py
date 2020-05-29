@@ -130,6 +130,7 @@ class BorrowBook:
 
     @staticmethod
     def borrow_book():
+<<<<<<< HEAD
         ControladorLector.listar_lectores()
         try:
             while True:
@@ -184,6 +185,17 @@ class BorrowBook:
             print('Error aqui:', str(i))
         except KeyboardInterrupt:
             print('Se interrumpio la app')
+=======
+        VistaLibro.listar_libros()
+        u_idenficador = input("Ingresa el identificador del lector: ")
+        VistaLibro.listar_libros()
+        id_libro = input("Ingresa el ISBN del libro: ")
+        fecha = input('ingrese la fecha de devolucion: ')
+
+        ControladorAlquiler.borrow(id_libro,u_idenficador, fecha)
+        print('\n')
+        print('Se añadio un nuevo libro!')
+>>>>>>> none
 
 class VistaAplicacion:
     @staticmethod
