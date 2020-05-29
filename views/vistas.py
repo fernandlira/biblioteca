@@ -21,13 +21,13 @@ class VistaLector:
         while True:
             try:
                 identificador = input("Ingresa su DNI: ")
-                if ControladorLector.verificar_id(identificador):
+                if ControladorLector.verificar_id(identificador.upper()):
                     break
                 else:
                     raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
             except Exception as e:
                 print(f"error aqui: {str(e)}")
-        ControladorLector.registrar_lector(identificador,input("Ingrese el nombre del nuevo lector: "))
+        ControladorLector.registrar_lector(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
 
 
 class VistaLibro:
@@ -69,7 +69,7 @@ class VistaLibro:
         try:
             while True:
                 try:
-                    identificador = input("Ingresa el ISBN del Libro: ")
+                    identificador = input("Ingresa el ISBN del Libro: ").upper()
                     if ControladorLibro.verificar_id(identificador):
                         break
                     else:
@@ -99,7 +99,7 @@ class VistaLibro:
                                 raise Exception("El ID del autor no existe, ingrese uno de la lista")
                         except Exception as e:
                             print(f"{e}")
-                    ControladorLibro.registrar_libro(identificador, libro, autor, editorial)
+                    ControladorLibro.registrar_libro(identificador.upper(), libro, autor, editorial)
                     break
         except Exception as e:
             print(f"Error aqui: {str(e)}")
@@ -129,12 +129,39 @@ class BorrowBook:
     @staticmethod
     def borrow_book():
         ControladorLector.listar_lectores()
-        u_idenficador = (input("Ingresa el identificador del lector: "))
-        VistaLibro.listar_libros()
-        id_libro = input("Ingresa el ISBN del libro: ")
-        fecha = input('ingrese la fecha de devolucion: ')
-        ControladorAlquiler.borrow(id_libro,u_idenficador, fecha)
-        print('Se añadio un nuevo libro!')
+        try:
+            while True:
+                try:
+                    u_idenficador = input("Ingresa el identificador del lector: ").upper()
+                    if ControladorLector.verificar_id_existente(u_idenficador):
+                        print("")
+                        break
+                    else:
+                        raise Exception("--- EL identificador no existe --- Por favor, ingrese uno diferente")
+                except Exception as e:
+                    print(f"error aqui: {str(e)}")
+            ControladorLibro.listar_libros_disponibles()
+            ids = []
+            while True:
+                while True:
+                    try:
+                        id_libro = input("Ingresa el codigo del libro: ").upper()
+                        if ControladorAlquiler.verificar_id(id_libro):
+                            ids.append(id_libro)
+                            break
+                        else:
+                            raise Exception("--- EL identificador no existe o no esta disponible --- Por favor, ingrese uno diferente")
+                    except Exception as i:
+                        print('Error aqui:', str(i))
+                opcion = int(input("¿Desea alquilar otro libro? (0) NO (1) SI: "))
+                if opcion == 0:
+                    break
+            ControladorAlquiler.borrow(list(set(ids)),u_idenficador)
+                                  
+        except Exception as i:
+            print('Error aqui:', str(i))
+        except KeyboardInterrupt:
+            print('Se interrumpio la app')
 
 class VistaAplicacion:
     @staticmethod

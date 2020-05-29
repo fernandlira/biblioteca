@@ -47,11 +47,19 @@ class ControladorLibro:
     def listar_libros(cls):
         return Libro.listar()
 
+    @classmethod
+    def listar_libros_disponibles(cls):
+        return Libro.listar_disponibles()
+
 class ControladorLector:
 
     @classmethod
     def verificar_id(cls, identificador):
         return User.verify_id(identificador)
+
+    @classmethod
+    def verificar_id_existente(cls, identificador):
+        return User.verify_id_exists(identificador)
 
     @classmethod
     def registrar_lector(cls, identificador,nombre):
@@ -66,8 +74,14 @@ class ControladorLector:
 class ControladorAlquiler:
 
     @classmethod
-    def borrow(cls, book_id, author_id, fecha):
-        return Libro.borrow_book(book_id, author_id, fecha)
+    def verificar_id(cls,identificador):
+        return Libro.alquiler_verify_id(identificador)
+
+    @classmethod
+    def borrow(cls,ids,u_idenficador):
+        for ide in ids:
+            Libro.borrow_book(ide,u_idenficador)
+            print(f"Alquiler del libro {ide} completado!")
 
     @classmethod
     def get_identifiers_list(cls):

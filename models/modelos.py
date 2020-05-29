@@ -1,4 +1,5 @@
 from database.connection import Conexion
+from datetime import date
 
 
 class Author:
@@ -92,6 +93,13 @@ class Libro:
         for r in response:
             print(f"\ISBN: {r[0]} Libro: {r[1]} Autor: {r[2]} Editorial: {r[3]}\n")
 
+    def listar_disponibles():
+        conn = Conexion()
+        conn.query("SELECT * FROM books WHERE status = True")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"ID: {r[0]} \nIdentificador: {r[1]} \nNombre: {r[2]}\nAutor: {r[3]}\nEditorial: {r[4]}\n")
+
 
     def verify_id(identifier):
         lista = []
@@ -103,15 +111,24 @@ class Libro:
         if identifier not in lista:
             return True
 
+    def alquiler_verify_id(identifier):
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT identifier FROM books WHERE status = True")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[0])
+        if identifier in lista:
+            return True
 
     @staticmethod
-    def borrow_book(book_id,author_id,fecha):
+    def borrow_book(book_id,author_id):
         conn = Conexion()
         cursor = conn.connection.cursor()
-        cursor.execute(f"INSERT INTO borrows (book_id,user_id,date,date_of_return) values (%(book_id)s, %(user_id)s, current_date, %(date_of_return)s);",{ 
+        cursor.execute(f"INSERT INTO borrows (book_id,user_id,date) values (%(book_id)s, %(user_id)s, %(date)s);",{ 
             'book_id' : book_id,
             'user_id': author_id,
-            'date_of_return': fecha
+            'date': date.today()
         })
         conn.connection.commit()
         cursor.execute(f"UPDATE books SET status = False WHERE identifier = (%(book_id)s);",{ 
@@ -174,6 +191,16 @@ class User:
         for r in response:
             lista.append(r[1])
         if identifier not in lista:
+            return True
+
+    def verify_id_exists(identifier):
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT * FROM users")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        if identifier in lista:
             return True
 
     def listar():
