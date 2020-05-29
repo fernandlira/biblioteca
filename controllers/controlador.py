@@ -44,12 +44,20 @@ class ControladorLibro:
         return Author.verify_id(autor)
 
     @classmethod
+    def verificar_libros_alquilados(cls,identifier):
+        return Libro.verify_if_borrowed(identifier)
+
+    @classmethod
     def listar_libros(cls):
         return Libro.listar()
 
     @classmethod
     def listar_libros_disponibles(cls):
         return Libro.listar_disponibles()
+
+    @classmethod
+    def devolver(cls,identifier):
+        return Libro.devolver(identifier)
 
 class ControladorLector:
 

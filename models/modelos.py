@@ -121,6 +121,16 @@ class Libro:
         if identifier in lista:
             return True
 
+    def verify_if_borrowed(identifier):
+        lista = []
+        conn = Conexion()
+        conn.query("SELECT identifier FROM books WHERE status = False")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[0])
+        if identifier in lista:
+            return True
+
     @staticmethod
     def borrow_book(book_id,author_id):
         conn = Conexion()
@@ -132,6 +142,21 @@ class Libro:
         })
         conn.connection.commit()
         cursor.execute(f"UPDATE books SET status = False WHERE identifier = (%(book_id)s);",{ 
+            'book_id' : book_id
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    @staticmethod
+    def devolver(book_id):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"UPDATE borrows set date_of_return = (%(date)s) WHERE book_id = (%(book_id)s) AND id IN(SELECT max(id) FROM borrows);",{ 
+            'book_id' : book_id,
+            'date': date.today()
+        })
+        conn.connection.commit()
+        cursor.execute(f"UPDATE books SET status = True WHERE identifier = (%(book_id)s);",{ 
             'book_id' : book_id
         })
         conn.connection.commit()

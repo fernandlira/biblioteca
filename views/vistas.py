@@ -121,10 +121,12 @@ class BorrowBook:
 
     @staticmethod
     def menu():
-        print('presiona (1) si deseas aquirir un nuevo libro')
-        opcion = int(input('alquile un libro: '))
+        print('(1) Alquilar un Libro (2) Devolver un libro')
+        opcion = int(input('Ingrese la opción: '))
         if opcion == 1:
             BorrowBook.borrow_book()
+        if opcion == 2:
+            BorrowBook.return_book()
 
     @staticmethod
     def borrow_book():
@@ -157,6 +159,26 @@ class BorrowBook:
                 if opcion == 0:
                     break
             ControladorAlquiler.borrow(list(set(ids)),u_idenficador)
+                                  
+        except Exception as i:
+            print('Error aqui:', str(i))
+        except KeyboardInterrupt:
+            print('Se interrumpio la app')
+
+    @staticmethod
+    def return_book():
+        try:
+            while True:
+                try:
+                    idenficador = input("Ingresa el identificador del libro a devolver: ").upper()
+                    if ControladorLibro.verificar_libros_alquilados(idenficador):
+                        ControladorLibro.devolver(idenficador)
+                        print("Devolucion exitosa!")
+                        break
+                    else:
+                        raise Exception("--- EL identificador no existe o no pertenece a un libro alquilado --- Por favor, ingrese uno diferente")
+                except Exception as e:
+                    print(f"error aqui: {str(e)}")
                                   
         except Exception as i:
             print('Error aqui:', str(i))
