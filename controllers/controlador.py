@@ -31,8 +31,8 @@ class ControladorLibro:
 
     @classmethod
     def registrar_libro(cls, identificador, nombre, autor, editorial):
-        cls.libro = Libro(identificador, nombre, autor, editorial)
-        cls.libro.insert_book()
+        libro = Libro(identificador, nombre, autor, editorial)
+        libro.insert_book()
         print(f'Se registro correctamente el libro {nombre}')
 
     @classmethod
@@ -58,6 +58,15 @@ class ControladorLibro:
     @classmethod
     def devolver(cls,identifier):
         return Libro.devolver(identifier)
+
+# Funcion ELiminar
+    @classmethod
+    def eliminar_libro(cls, identificador):
+        return Libro.eliminar_libro(identificador)
+
+    @classmethod
+    def eliminar_alquiler(cls, libro):
+        return Libro.eliminar_libro_alquiler(libro)
 
 class ControladorLector:
 
@@ -92,9 +101,5 @@ class ControladorAlquiler:
             print(f"Alquiler del libro {ide} completado!")
 
     @classmethod
-    def get_identifiers_list(cls):
-        return cls.Libro.get_identifiers_list()
-
-    @classmethod
-    def get_identifiers_list2(cls):
-        return cls.Libro.get_identifiers_list2()
+    def listado(cls):
+        return Libro.listar_borrow()

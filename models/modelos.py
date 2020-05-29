@@ -162,26 +162,34 @@ class Libro:
         conn.connection.commit()
         conn.connection.close()
 
-    def get_identifiers_list():
-        lista = []
+    @staticmethod
+    def eliminar_libro(identificador):
         conn = Conexion()
-        conn.query(f"SELECT * FROM books")
+        cursor = conn.connection.cursor()
+        cursor.execute(f"DELETE FROM books WHERE identifier = (%(identifier)s)",{ 
+            'identifier' : identificador
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    @staticmethod
+    def eliminar_libro_alquiler(libro):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"DELETE FROM borrows WHERE book_id = (%(book_id)s)",{ 
+            'book_id' : libro
+        })        
+        conn.connection.commit()
+        conn.connection.close()
+
+    def listar_borrow():
+        conn = Conexion()
+        conn.query("select identifier, book, user_id, date from borrows as b inner join books as p on b.book_id=p.identifier")
         response = conn.cursor.fetchall()
         for r in response:
-            lista.append(r[1])
-        return lista
+            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Fecha: {r[3]}\n')
+
     
-    def get_identifiers_list2():
-        lista = []
-        conn = Conexion()
-        conn.query(f"SELECT * FROM books WHERE status = True")
-        response = conn.cursor.fetchall()
-        for r in response:
-            lista.append(r[1])
-        return lista
-
-
-
 
 class User:
 
