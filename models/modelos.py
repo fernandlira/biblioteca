@@ -31,8 +31,7 @@ class Author:
         if identifier in ids:
             return True
 
-    def __str__(self):
-        return f"\nAuthor : {self.author}\n"
+
 
 class Editorial:
     def __init__(self, editorial):
@@ -64,8 +63,6 @@ class Editorial:
         if identifier in ids:
             return True
 
-    def __str__(self):
-        return f"\nEditorial : {self.editorial}\n"
 
 class Libro:
     def __init__(self, identificador, nombre, autor, editorial):
@@ -74,15 +71,6 @@ class Libro:
         self.autor = autor
         self.editorial = editorial
 
-
-    @staticmethod
-    def buscar_libro(nombre, libros):
-        resultado = None
-        for libro in libros:
-            if libro.nombre == nombre:
-                resultado = libro
-                break
-        return resultado
 
     def insert_book(self):
         conn = Conexion()
@@ -96,6 +84,15 @@ class Libro:
         conn.connection.commit()
         conn.connection.close()
 
+
+    def listar():
+        conn = Conexion()
+        conn.query("select identifier, book, author, p_company from books as b inner join authors as a on b.author_id =a.id inner join p_companies as e on b.p_company_id = e.id;")
+        response = conn.cursor.fetchall()
+        for r in response:
+            print(f"\ISBN: {r[0]} Libro: {r[1]} Autor: {r[2]} Editorial: {r[3]}\n")
+
+
     def verify_id(identifier):
         lista = []
         conn = Conexion()
@@ -106,25 +103,43 @@ class Libro:
         if identifier not in lista:
             return True
 
-class Alquiler:
-    def __init__(self, dni, lector):
-        self.dni = dni
-        self.lector = lector
-        self.prestamo = []
 
-    def añadir_libros(self, libro, fecha_hoy, fecha_entrega):
-        self.prestamo.append(
-            (libro, fecha_hoy, fecha_entrega)
-        )
+    @staticmethod
+    def borrow_book(book_id,author_id,fecha):
+        conn = Conexion()
+        cursor = conn.connection.cursor()
+        cursor.execute(f"INSERT INTO borrows (book_id,user_id,date,date_of_return) values (%(book_id)s, %(user_id)s, current_date, %(date_of_return)s);",{ 
+            'book_id' : book_id,
+            'user_id': author_id,
+            'date_of_return': fecha
+        })
+        conn.connection.commit()
+        cursor.execute(f"UPDATE books SET status = False WHERE identifier = (%(book_id)s);",{ 
+            'book_id' : book_id
+        })
+        conn.connection.commit()
+        conn.connection.close()
 
-    def __str__(self):
-        return (
-            "\n---------------------------------------"
-            f"\nSu DNI: {self.dni}\n"
-            f"\nla persona: {self.lector}\n"
-            f"\ndetalle: {self.prestamo}\n"
-            "------------------------------------------"
-        )
+    def get_identifiers_list():
+        lista = []
+        conn = Conexion()
+        conn.query(f"SELECT * FROM books")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        return lista
+    
+    def get_identifiers_list2():
+        lista = []
+        conn = Conexion()
+        conn.query(f"SELECT * FROM books WHERE status = True")
+        response = conn.cursor.fetchall()
+        for r in response:
+            lista.append(r[1])
+        return lista
+
+
+
 
 class User:
 
