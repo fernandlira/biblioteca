@@ -65,8 +65,6 @@ class ControladorLibro:
     def verificar_editorial(cls,editorial):
         return Editorial.obtener_ids(editorial)
 
-
-
     @classmethod
     def verificar_libros_alquilados(cls,identifier):
         return Libro.verify_if_borrowed(identifier)

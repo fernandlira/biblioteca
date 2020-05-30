@@ -4,7 +4,7 @@ class Conexion:
     def __init__(self):
         try:
             self.connection = psycopg2.connect(user = "postgres",
-                                        password = "liraq_07",
+                                        password = "--",
                                         host = "127.0.0.1",
                                         port = "5432",
                                         database = "library")
