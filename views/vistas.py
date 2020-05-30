@@ -12,7 +12,7 @@ class VistaLector:
             if opcion == 1:
                 VistaLector.registro()
             elif opcion == 2:
-                ControladorLector.listar_lectores()
+                ControladorLector.read()
             else:
                 break
     
@@ -21,13 +21,13 @@ class VistaLector:
         while True:
             try:
                 identificador = input("Ingresa su DNI: ")
-                if ControladorLector.verificar_id(identificador.upper()):
+                if ControladorLector.verify_unique_id(identificador.upper()):
                     break
                 else:
                     raise Exception("--- Ya existe el identificador --- Por favor, ingrese uno diferente")
             except Exception as e:
                 print(f"error aqui: {str(e)}")
-        ControladorLector.registrar_lector(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
+        ControladorLector.create(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
 
 class VistaLibro:
 
@@ -54,12 +54,12 @@ class VistaLibro:
     @staticmethod
     def ingreso_autor():
         nombre = input("Ingrese nombre de Autor: ")
-        ControladorAutor.registrar_autor(nombre)
+        ControladorAutor.create(nombre)
 
     @staticmethod
     def ingreso_editorial():
         nombre = input('Ingrese nombre de editorial: ')
-        ControladorEditorial.registrar_editorial(nombre)
+        ControladorEditorial.create(nombre)
 
     @staticmethod
     def listar_libros():
@@ -94,13 +94,13 @@ class VistaLibro:
                         VistaLibro.listado_autores()
                         try:
                             autor = int(input("Ingrese el ID del autor: "))
-                            if ControladorLibro.verificar_autor(autor):
+                            if ControladorAutor.verificar_autor(autor):
                                 break
                             else:
                                 raise Exception("El ID del autor no existe, ingrese uno de la lista")
                         except Exception as e:
                             print(f"{e}")
-                    ControladorLibro.registrar_libro(identificador.upper(), libro, autor, editorial)
+                    ControladorLibro.create(identificador.upper(), libro, autor, editorial)
                     break
         except Exception as e:
             print(f"Error aqui: {str(e)}")
@@ -111,11 +111,11 @@ class VistaLibro:
 
     @staticmethod
     def listado_autores():
-        return ControladorAutor.listar_autores()
+        return ControladorAutor.read()
 
     @staticmethod
     def lista_editoriales():
-        return ControladorEditorial.listar_editoriales()
+        return ControladorEditorial.read()
 
     @staticmethod
     def eliminar_libro():
@@ -141,12 +141,12 @@ class BorrowBook:
 
     @staticmethod
     def borrow_book():
-        ControladorLector.listar_lectores()
+        ControladorLector.read()
         try:
             while True:
                 try:
                     u_idenficador = input("Ingresa el identificador del lector: ").upper()
-                    if ControladorLector.verificar_id_existente(u_idenficador):
+                    if ControladorLector.verify_id_exists(u_idenficador):
                         print("")
                         break
                     else:

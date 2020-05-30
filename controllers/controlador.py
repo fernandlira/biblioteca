@@ -3,25 +3,51 @@ from models.modelos import (Author, Editorial, Libro, User)
 class ControladorAutor:
 
     @classmethod
-    def registrar_autor(cls, nombre):
+    def create(cls, nombre):
         cls.autor = Author(nombre)
         cls.autor.insert_author()
         print(f"Se registro al autor {nombre} exitosamente")
 
     @classmethod
-    def listar_autores(cls):
+    def read(cls):
         return Author.listar()
+
+    @classmethod
+    def verificar_autor(cls,autor):
+        return Author.verify_id(autor)
 
 class ControladorEditorial:
 
     @classmethod
-    def registrar_editorial(cls, nombre):
+    def create(cls, nombre):
         cls.editorial = Editorial(nombre)
         cls.editorial.insert_editorial()
 
     @classmethod
-    def listar_editoriales(cls):
+    def read(cls):
         return Editorial.listar()
+
+
+class ControladorLector:
+
+    @classmethod
+    def create(cls, identificador,nombre):
+        Usuario = User(identificador,nombre)
+        Usuario.insert_user()
+        print(f"Se registro al usuario {nombre} exitosamente")
+
+    @classmethod
+    def verify_unique_id(cls, identificador):
+        return User.verify_id(identificador)
+
+    @classmethod
+    def verify_id_exists(cls, identificador):
+        return User.verify_id_exists(identificador) 
+
+    @classmethod
+    def read(cls):
+        return User.listar()
+
 
 class ControladorLibro:
 
@@ -30,7 +56,7 @@ class ControladorLibro:
         return Libro.verify_id(identificador)
 
     @classmethod
-    def registrar_libro(cls, identificador, nombre, autor, editorial):
+    def create(cls, identificador, nombre, autor, editorial):
         libro = Libro(identificador, nombre, autor, editorial)
         libro.insert_book()
         print(f'Se registro correctamente el libro {nombre}')
@@ -39,9 +65,7 @@ class ControladorLibro:
     def verificar_editorial(cls,editorial):
         return Editorial.obtener_ids(editorial)
 
-    @classmethod
-    def verificar_autor(cls,autor):
-        return Author.verify_id(autor)
+
 
     @classmethod
     def verificar_libros_alquilados(cls,identifier):
@@ -68,25 +92,7 @@ class ControladorLibro:
     def eliminar_alquiler(cls, libro):
         return Libro.eliminar_libro_alquiler(libro)
 
-class ControladorLector:
 
-    @classmethod
-    def verificar_id(cls, identificador):
-        return User.verify_id(identificador)
-
-    @classmethod
-    def verificar_id_existente(cls, identificador):
-        return User.verify_id_exists(identificador)
-
-    @classmethod
-    def registrar_lector(cls, identificador,nombre):
-        Usuario = User(identificador,nombre)
-        Usuario.insert_user()
-        print(f"Se registro al usuario {nombre} exitosamente")
-
-    @classmethod
-    def listar_lectores(cls):
-        return User.listar()
 
 class ControladorAlquiler:
 

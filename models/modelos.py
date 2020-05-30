@@ -191,15 +191,6 @@ class User:
         conn.connection.commit()
         conn.connection.close()
 
-    def get_identifiers_list():
-        lista = []
-        conn = Conexion()
-        conn.query("SELECT * FROM users")
-        response = conn.cursor.fetchall()
-        for r in response:
-            lista.append(r[1])
-        return lista
-
     def verify_id(identifier):
         lista = []
         conn = Conexion()
