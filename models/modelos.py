@@ -1,7 +1,6 @@
 from database.connection import Conexion
 from datetime import date
 
-
 class Author:
     def __init__(self, author):
         self.author = author
@@ -32,8 +31,6 @@ class Author:
         if identifier in ids:
             return True
 
-
-
 class Editorial:
     def __init__(self, editorial):
         self.editorial = editorial
@@ -63,7 +60,6 @@ class Editorial:
             ids.append(r[0])
         if identifier in ids:
             return True
-
 
 class Libro:
     def __init__(self, identificador, nombre, autor, editorial):
@@ -172,24 +168,12 @@ class Libro:
         conn.connection.commit()
         conn.connection.close()
 
-    @staticmethod
-    def eliminar_libro_alquiler(libro):
-        conn = Conexion()
-        cursor = conn.connection.cursor()
-        cursor.execute(f"DELETE FROM borrows WHERE book_id = (%(book_id)s)",{ 
-            'book_id' : libro
-        })        
-        conn.connection.commit()
-        conn.connection.close()
-
     def listar_borrow():
         conn = Conexion()
         conn.query("select identifier, book, user_id, date from borrows as b inner join books as p on b.book_id=p.identifier")
         response = conn.cursor.fetchall()
         for r in response:
-            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Fecha: {r[3]}\n')
-
-    
+            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Fecha: {r[3]}\n')    
 
 class User:
 
@@ -245,4 +229,3 @@ class User:
 
     def __str__(self):
         return f"\nIdentificador: {self.identifier}, Nombre: {self.name}\n"
-

@@ -29,8 +29,6 @@ class VistaLector:
                 print(f"error aqui: {str(e)}")
         ControladorLector.registrar_lector(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
 
-
-
 class VistaLibro:
 
     @staticmethod
@@ -134,14 +132,12 @@ class BorrowBook:
 
     @staticmethod
     def menu():
-        print('(1) Alquilar un Libro (2) Devolver un libro (3) eliminar alquiler')
+        print('(1) Alquilar un Libro (2) Devolver un libro')
         opcion = int(input('Ingrese la opción: '))
         if opcion == 1:
             BorrowBook.borrow_book()
         elif opcion == 2:
             BorrowBook.return_book()
-        elif opcion == 3:
-            BorrowBook.eliminar_alquiler()
 
     @staticmethod
     def borrow_book():
@@ -201,17 +197,6 @@ class BorrowBook:
             print('Error aqui:', str(i))
         except KeyboardInterrupt:
             print('Se interrumpio la app')
-
-    @staticmethod
-    def eliminar_alquiler():
-        try:
-            BorrowBook.borrow_list()
-            libro = input('Que libro desea eliminar de la lista de alquiler (escriba el ISBN): ')
-            ControladorLibro.eliminar_alquiler(libro)
-            print('\nEliminado satisfactoriamente\n')
-        except ValueError:
-            print('no ingreso un dato')
-
 
     def borrow_list():
         return ControladorAlquiler.listado()
