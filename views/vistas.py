@@ -201,7 +201,7 @@ class BorrowBook:
             print('Se interrumpio la app')
 
     def borrow_list():
-        return ControladorAlquiler.listado()
+        return ControladorAlquiler.read()
 
 class VistaAplicacion:
     @staticmethod
