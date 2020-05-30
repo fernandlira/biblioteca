@@ -29,7 +29,6 @@ class VistaLector:
                 print(f"error aqui: {str(e)}")
         ControladorLector.registrar_lector(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
 
-
 class VistaLibro:
 
     @staticmethod
@@ -37,7 +36,7 @@ class VistaLibro:
         while True:
             print('\n')
             print('ESTAS EN LA SECCION DE REGISTRO DE LIBROS')
-            print('(1) Registrar Autor (2) Registrar Editorial (3) Registrar Libro (4) Ver libros (5) Para regresar al menu principal')
+            print('(1) Registrar Autor (2) Registrar Editorial (3) Registrar Libro (4) Ver libros (5) Eliminar libro (7) Para regresar al menu principal')
             opcion = int(input('ingrese el numero: '))
             if opcion == 1:
                 VistaLibro.ingreso_autor()
@@ -47,6 +46,8 @@ class VistaLibro:
                 VistaLibro.ingreso_libro()
             elif opcion == 4:
                 VistaLibro.listar_libros()
+            elif opcion == 5:
+                VistaLibro.eliminar_libro()
             else:
                 break
 
@@ -87,7 +88,7 @@ class VistaLibro:
                             else:
                                 raise Exception("El ID del editorial no existe, ingrese uno de la lista")
                         except Exception as e:
-                            print(f"{e}")
+                            print(f"Error aqui: {str(e)}")
                     
                     while True:
                         VistaLibro.listado_autores()
@@ -116,6 +117,16 @@ class VistaLibro:
     def lista_editoriales():
         return ControladorEditorial.listar_editoriales()
 
+    @staticmethod
+    def eliminar_libro():
+        try:
+            VistaLibro.listar_libros()
+            isbn = input('ingrese el ISBN del libro que desea borrar: ')
+            ControladorLibro.eliminar_libro(isbn)
+            print('\nEliminado satisfactoriamente\n')
+
+        except ValueError:
+            print('no pusiste un dato')
 
 class BorrowBook:
 
@@ -125,7 +136,7 @@ class BorrowBook:
         opcion = int(input('Ingrese la opción: '))
         if opcion == 1:
             BorrowBook.borrow_book()
-        if opcion == 2:
+        elif opcion == 2:
             BorrowBook.return_book()
 
     @staticmethod
@@ -147,6 +158,7 @@ class BorrowBook:
             while True:
                 while True:
                     try:
+                        ControladorLibro.listar_libros()
                         id_libro = input("Ingresa el codigo del libro: ").upper()
                         if ControladorAlquiler.verificar_id(id_libro):
                             ids.append(id_libro)
@@ -170,6 +182,7 @@ class BorrowBook:
         try:
             while True:
                 try:
+                    BorrowBook.borrow_list()
                     idenficador = input("Ingresa el identificador del libro a devolver: ").upper()
                     if ControladorLibro.verificar_libros_alquilados(idenficador):
                         ControladorLibro.devolver(idenficador)
@@ -184,6 +197,9 @@ class BorrowBook:
             print('Error aqui:', str(i))
         except KeyboardInterrupt:
             print('Se interrumpio la app')
+
+    def borrow_list():
+        return ControladorAlquiler.listado()
 
 class VistaAplicacion:
     @staticmethod

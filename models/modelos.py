@@ -1,7 +1,6 @@
 from database.connection import Conexion
 from datetime import date
 
-
 class Author:
     def __init__(self, author):
         self.author = author
@@ -32,8 +31,6 @@ class Author:
         if identifier in ids:
             return True
 
-
-
 class Editorial:
     def __init__(self, editorial):
         self.editorial = editorial
@@ -63,7 +60,6 @@ class Editorial:
             ids.append(r[0])
         if identifier in ids:
             return True
-
 
 class Libro:
     def __init__(self, identificador, nombre, autor, editorial):
@@ -162,26 +158,22 @@ class Libro:
         conn.connection.commit()
         conn.connection.close()
 
-    def get_identifiers_list():
-        lista = []
+    @staticmethod
+    def eliminar_libro(identificador):
         conn = Conexion()
-        conn.query(f"SELECT * FROM books")
+        cursor = conn.connection.cursor()
+        cursor.execute(f"DELETE FROM books WHERE identifier = (%(identifier)s)",{ 
+            'identifier' : identificador
+        })
+        conn.connection.commit()
+        conn.connection.close()
+
+    def listar_borrow():
+        conn = Conexion()
+        conn.query("select identifier, book, user_id, date from borrows as b inner join books as p on b.book_id=p.identifier")
         response = conn.cursor.fetchall()
         for r in response:
-            lista.append(r[1])
-        return lista
-    
-    def get_identifiers_list2():
-        lista = []
-        conn = Conexion()
-        conn.query(f"SELECT * FROM books WHERE status = True")
-        response = conn.cursor.fetchall()
-        for r in response:
-            lista.append(r[1])
-        return lista
-
-
-
+            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Fecha: {r[3]}\n')    
 
 class User:
 
@@ -237,4 +229,3 @@ class User:
 
     def __str__(self):
         return f"\nIdentificador: {self.identifier}, Nombre: {self.name}\n"
-
