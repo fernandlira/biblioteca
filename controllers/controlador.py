@@ -52,14 +52,14 @@ class ControladorLector:
 class ControladorLibro:
 
     @classmethod
-    def verificar_id(cls,identificador):
-        return Libro.verify_id(identificador)
-
-    @classmethod
     def create(cls, identificador, nombre, autor, editorial):
         libro = Libro(identificador, nombre, autor, editorial)
-        libro.insert_book()
+        libro.insert()
         print(f'Se registro correctamente el libro {nombre}')
+
+    @classmethod
+    def verificar_id(cls,identificador):
+        return Libro.verify_id(identificador)
 
     @classmethod
     def verificar_editorial(cls,editorial):
@@ -70,7 +70,7 @@ class ControladorLibro:
         return Libro.verify_if_borrowed(identifier)
 
     @classmethod
-    def listar_libros(cls):
+    def read(cls):
         return Libro.listar()
 
     @classmethod
@@ -86,11 +86,6 @@ class ControladorLibro:
     def eliminar_libro(cls, identificador):
         return Libro.eliminar_libro(identificador)
 
-    @classmethod
-    def eliminar_alquiler(cls, libro):
-        return Libro.eliminar_libro_alquiler(libro)
-
-
 
 class ControladorAlquiler:
 
@@ -105,5 +100,5 @@ class ControladorAlquiler:
             print(f"Alquiler del libro {ide} completado!")
 
     @classmethod
-    def listado(cls):
+    def read(cls):
         return Libro.listar_borrow()

@@ -20,7 +20,7 @@ class VistaLector:
     def registro():
         while True:
             try:
-                identificador = input("Ingresa su DNI: ")
+                identificador = input("Ingresa su identificador: ")
                 if ControladorLector.verify_unique_id(identificador.upper()):
                     break
                 else:
@@ -63,7 +63,7 @@ class VistaLibro:
 
     @staticmethod
     def listar_libros():
-        ControladorLibro.listar_libros()
+        ControladorLibro.read()
 
     @staticmethod
     def ingreso_libro():
@@ -132,12 +132,14 @@ class BorrowBook:
 
     @staticmethod
     def menu():
-        print('(1) Alquilar un Libro (2) Devolver un libro')
+        print('(1) Alquilar un Libro (2) Devolver un libro (3) Listar Alquileres')
         opcion = int(input('Ingrese la opción: '))
         if opcion == 1:
             BorrowBook.borrow_book()
         elif opcion == 2:
             BorrowBook.return_book()
+        elif opcion ==3:
+            ControladorAlquiler.read()
 
     @staticmethod
     def borrow_book():
@@ -158,7 +160,7 @@ class BorrowBook:
             while True:
                 while True:
                     try:
-                        ControladorLibro.listar_libros()
+                        ControladorLibro.read()
                         id_libro = input("Ingresa el codigo del libro: ").upper()
                         if ControladorAlquiler.verificar_id(id_libro):
                             ids.append(id_libro)

@@ -69,7 +69,7 @@ class Libro:
         self.editorial = editorial
 
 
-    def insert_book(self):
+    def insert(self):
         conn = Conexion()
         cursor = conn.connection.cursor()
         cursor.execute(f"INSERT INTO books (identifier, book, author_id, p_company_id) values (%(identifier)s, %(book)s, %(author_id)s, %(p_company_id)s);",{ 
@@ -84,7 +84,7 @@ class Libro:
 
     def listar():
         conn = Conexion()
-        conn.query("select identifier, book, author, p_company from books as b inner join authors as a on b.author_id =a.id inner join p_companies as e on b.p_company_id = e.id;")
+        conn.query("SELECT identifier, book, author, p_company from books as b inner join authors as a on b.author_id =a.id inner join p_companies as e on b.p_company_id = e.id;")
         response = conn.cursor.fetchall()
         for r in response:
             print(f"\ISBN: {r[0]} Libro: {r[1]} Autor: {r[2]} Editorial: {r[3]}\n")
@@ -170,10 +170,10 @@ class Libro:
 
     def listar_borrow():
         conn = Conexion()
-        conn.query("select identifier, book, user_id, date from borrows as b inner join books as p on b.book_id=p.identifier")
+        conn.query("SELECT p.identifier, book, user_id, name, date, date_of_return from borrows as b inner join books as p on b.book_id=p.identifier inner join users as u on b.user_id = u.identifier")
         response = conn.cursor.fetchall()
         for r in response:
-            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Fecha: {r[3]}\n')    
+            print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Lector: {r[3]}, Fecha Préstamo: {r[4]}, Fecha Devolución: {r[5]}\n')    
 
 class User:
 
