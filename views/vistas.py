@@ -1,7 +1,11 @@
 from controllers.controlador import (ControladorAutor, ControladorEditorial, ControladorLibro, ControladorLector, ControladorAlquiler)
 
+# creaciones de vistas para ejecutar los imputs y prints
+
+# vista para los usuarios
 class VistaLector:
 
+# menu de la zona de lectores
     @staticmethod
     def menu():
         while True:
@@ -15,7 +19,8 @@ class VistaLector:
                 ControladorLector.read()
             else:
                 break
-    
+
+# registro de usuarios lectores
     @staticmethod
     def registro():
         while True:
@@ -29,8 +34,10 @@ class VistaLector:
                 print(f"error aqui: {str(e)}")
         ControladorLector.create(identificador.upper(),input("Ingrese el nombre del nuevo lector: "))
 
+# vista para los libros
 class VistaLibro:
 
+# La vista del menu de libros 
     @staticmethod
     def menu():
         while True:
@@ -51,20 +58,24 @@ class VistaLibro:
             else:
                 break
 
+#  el ingreso del nombre del autor
     @staticmethod
     def ingreso_autor():
         nombre = input("Ingrese nombre de Autor: ")
         ControladorAutor.create(nombre)
 
+# el ingreso de la editorial
     @staticmethod
     def ingreso_editorial():
         nombre = input('Ingrese nombre de editorial: ')
         ControladorEditorial.create(nombre)
 
+# el listado de libros
     @staticmethod
     def listar_libros():
         ControladorLibro.read()
 
+# el ingreso de libros
     @staticmethod
     def ingreso_libro():
         try:
@@ -109,14 +120,17 @@ class VistaLibro:
         except ValueError:
             print('No puso un dato')
 
+# el listado de autores
     @staticmethod
     def listado_autores():
         return ControladorAutor.read()
 
+# el listado de editoriales
     @staticmethod
     def lista_editoriales():
         return ControladorEditorial.read()
 
+# la funcion de eliminar libros
     @staticmethod
     def eliminar_libro():
         try:
@@ -124,12 +138,13 @@ class VistaLibro:
             isbn = input('ingrese el ISBN del libro que desea borrar: ')
             ControladorLibro.eliminar_libro(isbn)
             print('\nEliminado satisfactoriamente\n')
-
         except ValueError:
             print('no pusiste un dato')
 
+# vistas para los alquileres
 class BorrowBook:
 
+# el menu del alquilar libros
     @staticmethod
     def menu():
         print('(1) Alquilar un Libro (2) Devolver un libro (3) Listar Alquileres')
@@ -141,6 +156,7 @@ class BorrowBook:
         elif opcion ==3:
             ControladorAlquiler.read()
 
+# ingreso del usuario lector y el libro que desea alquilar
     @staticmethod
     def borrow_book():
         ControladorLector.read()
@@ -179,13 +195,14 @@ class BorrowBook:
         except KeyboardInterrupt:
             print('Se interrumpio la app')
 
+# funcion de retornar el libro alquilado
     @staticmethod
     def return_book():
         try:
             while True:
                 try:
                     BorrowBook.borrow_list()
-                    idenficador = input("Ingresa el identificador del libro a devolver: ").upper()
+                    idenficador = input("Ingresa el ISBN del libro a devolver: ").upper()
                     if ControladorLibro.verificar_libros_alquilados(idenficador):
                         ControladorLibro.devolver(idenficador)
                         print("Devolucion exitosa!")
@@ -200,10 +217,13 @@ class BorrowBook:
         except KeyboardInterrupt:
             print('Se interrumpio la app')
 
+# lista de libros alquilados
     def borrow_list():
-        return ControladorAlquiler.listado()
+        return ControladorAlquiler.read()
 
+# vista para la aplicacion se ejecute
 class VistaAplicacion:
+# vista que ejecuta las funciones principales de la aplicacion
     @staticmethod
     def iniciar():
         try:
@@ -216,10 +236,12 @@ class VistaAplicacion:
         except KeyboardInterrupt:
             print('Se detuvo la app')
 
+# funcion de bienvenida
     @staticmethod
     def bienvenida():
         print('BIENVENIDO')
 
+# vista del menu principal
     @staticmethod
     def menu():
         while True:
