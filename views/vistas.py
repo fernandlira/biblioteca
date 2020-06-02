@@ -153,7 +153,7 @@ class BorrowBook:
             BorrowBook.borrow_book()
         elif opcion == 2:
             BorrowBook.return_book()
-        elif opcion ==3:
+        elif opcion == 3:
             ControladorAlquiler.read()
 
 # ingreso del usuario lector y el libro que desea alquilar
@@ -176,7 +176,6 @@ class BorrowBook:
             while True:
                 while True:
                     try:
-                        ControladorLibro.read()
                         id_libro = input("Ingresa el codigo del libro: ").upper()
                         if ControladorAlquiler.verificar_id(id_libro):
                             ids.append(id_libro)
