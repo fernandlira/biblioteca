@@ -170,7 +170,7 @@ class Libro:
 
     def listar_borrow():
         conn = Conexion()
-        conn.query("SELECT p.identifier, book, user_id, name, date, date_of_return from borrows as b inner join books as p on b.book_id=p.identifier inner join users as u on b.user_id = u.identifier")
+        conn.query("SELECT p.identifier, book, user_id, name, date, date_of_return from borrows as b inner join books as p on b.book_id=p.identifier inner join users as u on b.user_id = u.identifier WHERE date_of_return = Null")
         response = conn.cursor.fetchall()
         for r in response:
             print(f'\nISBN: {r[0]}, libro: {r[1]}, DNI: {r[2]}, Lector: {r[3]}, Fecha Préstamo: {r[4]}, Fecha Devolución: {r[5]}\n')    
